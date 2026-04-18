@@ -1,0 +1,16 @@
+Language: Cpp
+IndentWidth: 4
+ColumnLimit: 150
+AllowShortBlocksOnASingleLine: Never
+AllowShortFunctionsOnASingleLine: All
+AllowShortIfStatementsOnASingleLine: OnlyFirstIf
+AllowShortLoopsOnASingleLine: true
+AlignAfterOpenBracket: AlwaysBreak
+AllowShortCaseLabelsOnASingleLine: true
+NamespaceIndentation: All
+CompactNamespaces: false
+DerivePointerAlignment: false
+PointerAlignment: Left
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterNamespace: false
