@@ -4,4 +4,7 @@ wx_dep = dependency('wxwidgets', modules : ['core', 'base', 'net'])
 magick_dep = dependency('magick++')
 eigen_dep = dependency('Eigen3')
 
-executable('runclim', 'src/main.cpp', dependencies : wx_dep, win_subsystem : 'windows')
+inc = include_directories('include')
+sources = files('src/app.cpp', 'src/my_frame.cpp')
+
+executable('runclim', sources, include_directories : inc, dependencies : wx_dep, win_subsystem : 'windows')
