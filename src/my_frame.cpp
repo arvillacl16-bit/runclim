@@ -8,6 +8,7 @@ MyFrame::MyFrame()
 
     book_ = new wxSimplebook(this);
     book_->AddPage(BuildHomePage(book_), "");
+    book_->AddPage(BuildLoginPage(book_), "");
     book_->AddPage(BuildWorkPage(book_), "");
     book_->SetSelection(0);
 
@@ -64,9 +65,39 @@ wxPanel* MyFrame::BuildWorkPage(wxWindow* parent) {
     return panel;
 }
 
+wxPanel* MyFrame::BuildLoginPage(wxWindow* parent) {
+    wxPanel* panel = new wxPanel(parent);
+    wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
+    
+    username_field_ = new wxTextCtrl(panel, wxID_ANY, "", wxDefaultPosition, wxSize(250, -1));
+    password_field_ = new wxTextCtrl(panel, wxID_ANY, "", wxDefaultPosition, wxSize(250, -1), wxTE_PASSWORD);
+
+    wxButton* login_btn = new wxButton(panel, wxID_ANY, "Login");
+    wxButton* register_btn = new wxButton(panel, wxID_ANY, "Register");
+    
+    Bind(wxEVT_BUTTON, &MyFrame::OnLogSubmit, this, login_btn->GetId());
+    Bind(wxEVT_BUTTON, &MyFrame::OnLogSubmit, this, register_btn->GetId());
+
+    sizer->AddStretchSpacer();
+    sizer->Add(new wxStaticText(panel, wxID_ANY, "Username"), 0, wxALIGN_CENTER | wxBOTTOM, 5);
+    sizer->Add(username_field_, 0, wxALIGN_CENTER | wxBOTTOM, 10);
+    sizer->Add(new wxStaticText(panel, wxID_ANY, "Password"), 0, wxALIGN_CENTER | wxBOTTOM, 5);
+    sizer->Add(password_field_, 0, wxALIGN_CENTER | wxBOTTOM, 20);
+    sizer->Add(login_btn, 0, wxALIGN_CENTER | wxBOTTOM, 5);
+    sizer->Add(register_btn, 0, wxALIGN_CENTER | wxBOTTOM, 5);
+    sizer->AddStretchSpacer();
+
+    panel->SetSizer(sizer);
+    return panel;
+}
+
 void MyFrame::OnLogin(wxCommandEvent& event) {
-    // TODO: Add login logic
     book_->SetSelection(1);
+}
+
+void MyFrame::OnLogSubmit(wxCommandEvent& event) {
+    // TODO: Validate
+    book_->SetSelection(2);
 }
 
 void MyFrame::OnLogout(wxCommandEvent& event) {
