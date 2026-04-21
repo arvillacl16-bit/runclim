@@ -8,6 +8,7 @@ private:
     wxPanel* BuildHomePage(wxWindow* parent);
     wxPanel* BuildWorkPage(wxWindow* parent);
     void OnLogin(wxCommandEvent& event);
+    void OnLogout(wxCommandEvent& event);
 
 public:
     MyFrame();
