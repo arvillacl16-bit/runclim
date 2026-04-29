@@ -1,10 +1,9 @@
-project('Runclim', 'cpp', version : '1.0.0', default_options : ['cpp_std=c++20'])
+project('Runclim', 'cpp', 'c', version : '1.0.0', default_options : ['cpp_std=c++20'])
 
-wx_dep = dependency('wxwidgets', modules : ['core', 'base', 'net'])
-magick_dep = dependency('magick++')
-eigen_dep = dependency('Eigen3')
+wx_dep = dependency('wxWidgets', modules : ['core', 'base', 'net'])
+libnetcdf_dep = dependency('netcdf')
 
-inc = include_directories('include')
+inc = include_directories('include', 'third-party')
 sources = files('src/app.cpp', 'src/my_frame.cpp')
 
-executable('runclim', sources, include_directories : inc, dependencies : wx_dep, win_subsystem : 'windows')
+executable('runclim', sources, include_directories : inc, dependencies : [wx_dep, libnetcdf_dep])

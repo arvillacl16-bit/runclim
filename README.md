@@ -6,9 +6,9 @@ Runclim runs ExoPlaSim, a GCM, on the cloud, and also has analysis tools. This i
 
 - Meson (for building)
 - C++20 (no need for module support)
-- Magick++
-- wgWidgets
+- wxWidgets
 - Eigen
+- libnetcdf
 
 ## Building
 
