@@ -1,6 +1,7 @@
 #include "my_frame.hpp"
 #include <wx/wx.h>
 #include <wx/hyperlink.h>
+#include <wx/splitter.h>
 
 MyFrame::MyFrame()
     : wxFrame(nullptr, wxID_ANY, "Runclim") {
@@ -50,18 +51,25 @@ wxPanel* MyFrame::BuildHomePage(wxWindow* parent) {
 wxPanel* MyFrame::BuildWorkPage(wxWindow* parent) {
     wxPanel* panel = new wxPanel(parent);
     wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
+    
+    wxSplitterWindow* splitter = new wxSplitterWindow(panel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_BORDER | wxSP_LIVE_UPDATE);
 
-    wxStaticText* label = new wxStaticText(panel, wxID_ANY, "Work page coming soon");
+    wxPanel* runs_panel = new wxPanel(splitter);
+    wxPanel* analysis_panel = new wxPanel(splitter);
+
+    wxButton* new_run_btn = new wxButton(runs_panel, wxID_ANY, "New run");
+    wxStaticText* analysis_label = new wxStaticText(analysis_panel, wxID_ANY, "Analysis");
+
+    splitter->SplitVertically(runs_panel, analysis_panel);
+    splitter->SetSashGravity(0.3);
+    splitter->SetBackgroundColour(wxColour(150, 150, 150));
+
     wxButton* logout_btn = new wxButton(panel, wxID_ANY, "Logout");
-
     Bind(wxEVT_BUTTON, &MyFrame::OnLogout, this, logout_btn->GetId());
 
-    sizer->AddStretchSpacer();
-    sizer->Add(label, 0, wxALIGN_CENTER);
-    sizer->Add(logout_btn, 0, wxALIGN_CENTER | wxTOP, 10);
-    sizer->AddStretchSpacer();
-
-    panel->SetSizer(sizer);
+    sizer->Add(splitter, 1, wxEXPAND);
+    sizer->Add(logout_btn, 0, wxALIGN_RIGHT | wxALL, 5);
+    panel->SetSizer(sizer); 
     return panel;
 }
 
