@@ -7,6 +7,9 @@ MyFrame::MyFrame()
     : wxFrame(nullptr, wxID_ANY, "Runclim") {
     wxBoxSizer* main_sizer = new wxBoxSizer(wxVERTICAL);
 
+    poll_timer_ = new wxTimer(this);
+    Bind(wxEVT_TIMER, &MyFrame::OnPollTimer, this);
+
     book_ = new wxSimplebook(this);
     book_->AddPage(BuildHomePage(book_), "");
     book_->AddPage(BuildLoginPage(book_), "");
@@ -57,8 +60,19 @@ wxPanel* MyFrame::BuildWorkPage(wxWindow* parent) {
     wxPanel* runs_panel = new wxPanel(splitter);
     wxPanel* analysis_panel = new wxPanel(splitter);
 
+    analysis_book_ = new wxSimplebook(analysis_panel);
+    analysis_book_->AddPage(BuildDefaultAnalysisPage(analysis_book_), "");
+    analysis_book_->AddPage(BuildNewRunPage(analysis_book_), "");
+    analysis_book_->AddPage(BuildWaitPage(analysis_book_), "");
+    analysis_book_->AddPage(BuildExistingRunPage(analysis_book_), "");
+    analysis_book_->SetSelection(0);
+
+    wxBoxSizer* analysis_sizer = new wxBoxSizer(wxVERTICAL);
+    analysis_sizer->Add(analysis_book_, 1, wxEXPAND);
+    analysis_panel->SetSizer(analysis_sizer);
+
     wxButton* new_run_btn = new wxButton(runs_panel, wxID_ANY, "New run");
-    wxStaticText* analysis_label = new wxStaticText(analysis_panel, wxID_ANY, "Analysis");
+    Bind(wxEVT_BUTTON, &MyFrame::ShowNewRun, this, new_run_btn->GetId());
 
     splitter->SplitVertically(runs_panel, analysis_panel);
     splitter->SetSashGravity(0.3);
@@ -110,4 +124,76 @@ void MyFrame::OnLogSubmit(wxCommandEvent& event) {
 
 void MyFrame::OnLogout(wxCommandEvent& event) {
     book_->SetSelection(0);
+}
+
+void MyFrame::ShowDefaultAnalysis(wxCommandEvent& event) {
+    analysis_book_->SetSelection(0);
+}
+
+void MyFrame::ShowNewRun(wxCommandEvent& event) {
+    analysis_book_->SetSelection(1);
+}
+
+void MyFrame::ShowExistingRun(const wxString& run_id) {
+    // TODO: IMPLEMENT
+    analysis_book_->SetSelection(3);
+}
+
+void MyFrame::OnRunSubmitted(wxCommandEvent& event) {
+    // TODO: Send to cloud
+    ShowExistingRun("run_id");
+}
+
+void MyFrame::ShowWaitPage(wxCommandEvent& event) {
+    analysis_book_->SetSelection(2);
+    poll_timer_->Start(3000);
+}
+
+void MyFrame::OnPollTimer(wxTimerEvent& event) {
+    poll_timer_->Stop();
+    ShowExistingRun("run_id");
+}
+
+wxPanel* MyFrame::BuildDefaultAnalysisPage(wxWindow* parent) {
+    wxPanel* panel = new wxPanel(parent);
+    new wxStaticText(panel, wxID_ANY, "Default Analysis");
+    return panel;
+}
+
+wxPanel* MyFrame::BuildNewRunPage(wxWindow* parent) {
+    wxPanel* panel = new wxPanel(parent);
+    wxStaticText* text = new wxStaticText(panel, wxID_ANY, "New Run");
+    wxButton* btn = new wxButton(panel, wxID_ANY, "Send");
+    Bind(wxEVT_BUTTON, &MyFrame::ShowWaitPage, this, btn->GetId());
+
+    wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
+    sizer->AddStretchSpacer();
+    sizer->Add(text);
+    sizer->Add(btn);
+    sizer->AddStretchSpacer();
+
+    panel->SetSizer(sizer);
+    return panel;
+}
+
+wxPanel* MyFrame::BuildWaitPage(wxWindow* parent) {
+    wxPanel* panel = new wxPanel(parent);
+    wxStaticText* text = new wxStaticText(panel, wxID_ANY, "Waiting");
+    return panel;
+}
+
+wxPanel* MyFrame::BuildExistingRunPage(wxWindow* parent) {
+    wxPanel* panel = new wxPanel(parent);
+    wxStaticText* text = new wxStaticText(panel, wxID_ANY, "Existing Run");
+    wxButton* btn = new wxButton(panel, wxID_ANY, "Back to analysis");
+    Bind(wxEVT_BUTTON, &MyFrame::ShowDefaultAnalysis, this, btn->GetId());
+
+    wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
+    sizer->AddStretchSpacer();
+    sizer->Add(text);
+    sizer->Add(btn);
+    sizer->AddStretchSpacer();
+
+    panel->SetSizer(sizer);
+    return panel;
 }
