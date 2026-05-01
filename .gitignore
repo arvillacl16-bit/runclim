@@ -2,3 +2,5 @@
 build/
 build-release/
 .cache/
+.venv/
+__pycache__/
