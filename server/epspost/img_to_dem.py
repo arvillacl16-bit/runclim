@@ -29,7 +29,6 @@ def image_to_dem(
         image_path: str,
         output_path: str,
         max_elevation: float,
-        min_elevation: float = 0.,
         planet_radius: float = 6371.,
         target_width: Optional[int] = None,
         smooth_sigma: float = 1.
@@ -48,7 +47,7 @@ def image_to_dem(
     - smooth_sigma: Gaussian smoothing sigma
     """
     height_normalized = load_grayscale_image(image_path)
-    dem = min_elevation + height_normalized * (max_elevation - min_elevation)
+    dem = height_normalized * max_elevation
     dem = np.flipud(dem)
     if smooth_sigma > 0:
         dem = gaussian_filter(dem, sigma=smooth_sigma)
