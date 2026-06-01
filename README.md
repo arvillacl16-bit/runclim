@@ -1,6 +1,13 @@
 # Runclim
 
-Runclim runs ExoPlaSim, a GCM, on the cloud, and also has analysis tools. This is intended for use with worldbuilders.
+Runclim runs ExoPlaSim, a GCM, on the cloud, and also has analysis tools through a simple GUI interface. This is intended for use with worldbuilders.
+
+## Support Development
+
+We are currently tranistioning our donation infrastructure directly to stripe.
+
+* **Status:** Integration in progress
+* **Payment Processing:** Direct Stripe integration will initialize as soon as account verification is finalized.
 
 ## Dependencies
 

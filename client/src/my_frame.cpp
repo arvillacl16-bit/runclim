@@ -19,11 +19,9 @@ MyFrame::MyFrame()
     wxPanel* bottom_bar = new wxPanel(this);
     bottom_bar->SetBackgroundColour(wxColour(50, 50, 50));
 
-    [[maybe_unused]]
-    wxHyperlinkCtrl* link = new wxHyperlinkCtrl(
+     new wxStaticText(
         bottom_bar, wxID_ANY,
-        "Like this tool? Support development on Ko-Fi",
-        "https://ko-fi.com/arvantitik",
+        "Like this tool? Stripe integration will occur soon once we verify our account",
         wxPoint(10, 5)
     );
     main_sizer->Add(book_, 1, wxEXPAND);
