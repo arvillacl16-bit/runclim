@@ -4,7 +4,7 @@ Runclim runs ExoPlaSim, a GCM, on the cloud, and also has analysis tools through
 
 ## Support Development
 
-We are currently tranistioning our donation infrastructure directly to stripe.
+We are currently transitioning our donation infrastructure directly to stripe.
 
 * **Status:** Integration in progress
 * **Payment Processing:** Direct Stripe integration will initialize as soon as account verification is finalized.
