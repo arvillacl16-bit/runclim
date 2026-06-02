@@ -1,13 +1,6 @@
 # Runclim
-
+[![Donate via Stripe](https://img.shields.shields.shields.shields.shields.io/badge/Donate-Stripe-purple?style=for-the-badge&logo=stripe)](https://buy.stripe.com/3cI00jaDb5yjgmd5WZgfu00)
 Runclim runs ExoPlaSim, a GCM, on the cloud, and also has analysis tools through a simple GUI interface. This is intended for use with worldbuilders.
-
-## Support Development
-
-We are currently transitioning our donation infrastructure directly to stripe.
-
-* **Status:** Integration in progress
-* **Payment Processing:** Direct Stripe integration will initialize as soon as account verification is finalized.
 
 ## Interface Preview (In Progress)
 
