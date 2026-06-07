@@ -1,6 +1,8 @@
 #pragma once
 #include <wx/wx.h>
 #include <wx/simplebook.h>
+#include <wx/spinctrl.h>
+#include <wx/filepicker.h>
 
 class MyFrame : public wxFrame {
 private:
@@ -9,6 +11,8 @@ private:
     wxTextCtrl* password_field_;
     wxSimplebook* analysis_book_;
     wxTimer* poll_timer_;
+    wxSpinCtrlDouble *atm_n2_spin_, *atm_o2_spin_, *atm_co2_spin_, *flux_spin_, *star_temp_spin_;
+    wxFilePickerCtrl* topo_file_picker_;
 
     wxPanel* BuildHomePage(wxWindow* parent);
     wxPanel* BuildLoginPage(wxWindow* parent);

@@ -161,17 +161,60 @@ wxPanel* MyFrame::BuildDefaultAnalysisPage(wxWindow* parent) {
 
 wxPanel* MyFrame::BuildNewRunPage(wxWindow* parent) {
     wxPanel* panel = new wxPanel(parent);
+    wxBoxSizer* main_sizer = new wxBoxSizer(wxVERTICAL);
     wxStaticText* text = new wxStaticText(panel, wxID_ANY, "New Run");
-    wxButton* btn = new wxButton(panel, wxID_ANY, "Send");
-    Bind(wxEVT_BUTTON, &MyFrame::ShowWaitPage, this, btn->GetId());
+    
+    wxStaticBoxSizer* climate_box = new wxStaticBoxSizer(wxVERTICAL, panel, "Climate parameters");
+    wxFlexGridSizer* grid_sizer = new wxFlexGridSizer(2, 10, 20);
+    grid_sizer->AddGrowableCol(1, 1);
 
-    wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
-    sizer->AddStretchSpacer();
-    sizer->Add(text);
-    sizer->Add(btn);
-    sizer->AddStretchSpacer();
+    grid_sizer->Add(new wxStaticText(panel, wxID_ANY, "Partial pressure of N2(atm):"), 0, wxALIGN_CENTER_VERTICAL);
+    atm_n2_spin_ = new wxSpinCtrlDouble(panel, wxID_ANY, "0.78", wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0.0, 10.0, 0.78, 0.001);
+    grid_sizer->Add(atm_n2_spin_, 1, wxEXPAND);
 
-    panel->SetSizer(sizer);
+    grid_sizer->Add(new wxStaticText(panel, wxID_ANY, "Partial pressure of O2(atm):"), 0, wxALIGN_CENTER_VERTICAL);
+    atm_o2_spin_ = new wxSpinCtrlDouble(panel, wxID_ANY, "0.21", wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0.0, 10.0, 0.21, 0.001);
+    grid_sizer->Add(atm_o2_spin_, 1, wxEXPAND);
+
+    grid_sizer->Add(new wxStaticText(panel, wxID_ANY, "Partial pressure of CO2(atm):"), 0, wxALIGN_CENTER_VERTICAL);
+    atm_co2_spin_ = new wxSpinCtrlDouble(panel, wxID_ANY, "0.0004", wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0.0, 10.0, 0.0004, 0.00001);
+    grid_sizer->Add(atm_co2_spin_, 1, wxEXPAND);
+
+    grid_sizer->Add(new wxStaticText(panel, wxID_ANY, "Flux of planet(W/m^2):"), 0, wxALIGN_CENTER_VERTICAL);
+    flux_spin_ = new wxSpinCtrlDouble(panel, wxID_ANY, "1367", wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0.0, 3000.0, 1367.0, 0.5);
+    grid_sizer->Add(flux_spin_, 1, wxEXPAND);
+
+    grid_sizer->Add(new wxStaticText(panel, wxID_ANY, "Star temperature(K):"), 0, wxALIGN_CENTER_VERTICAL);
+    star_temp_spin_ = new wxSpinCtrlDouble(panel, wxID_ANY, "5778", wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1000.0, 10000.0, 5778.0, 50.0);
+    grid_sizer->Add(star_temp_spin_, 1, wxEXPAND);
+
+    climate_box->Add(grid_sizer);
+
+    wxStaticBoxSizer* topo_box = new wxStaticBoxSizer(wxVERTICAL, panel, "Topography selector");
+
+    wxStaticText* topo_label = new wxStaticText(panel, wxID_ANY, "Upload a greyscale heightmap (.png only)");
+    topo_box->Add(topo_label, 0, wxBOTTOM, 8);
+
+    wxString png_wildcard = "PNG files (*.png)|*.png";
+
+    topo_file_picker_ = new wxFilePickerCtrl(panel, wxID_ANY, wxEmptyString, "Select topography PNG map", png_wildcard, wxDefaultPosition, wxDefaultSize, wxFLP_DEFAULT_STYLE | wxFLP_FILE_MUST_EXIST);
+
+    topo_box->Add(topo_file_picker_, 0, wxEXPAND | wxALL, 5);
+    
+    main_sizer->Add(text);
+    main_sizer->Add(climate_box);
+    main_sizer->Add(topo_box, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 15);
+
+    main_sizer->AddStretchSpacer();
+
+    wxButton* send_btn = new wxButton(panel, wxID_ANY, "Send configuration to cloud");
+    send_btn->SetBackgroundColour(wxColour(43, 108, 176));
+    send_btn->SetForegroundColour(wxColour(*wxWHITE));
+    Bind(wxEVT_BUTTON, &MyFrame::ShowWaitPage, this, send_btn->GetId());
+
+    main_sizer->Add(send_btn, 0, wxALIGN_RIGHT | wxALL, 15);
+    panel->SetSizer(main_sizer);
+    
     return panel;
 }
 
